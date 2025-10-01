@@ -53,7 +53,7 @@
         margin-top: 2rem;
     }
     .image-container img {
-        max-width: 600px;
+        max-width: 60px;
         width: 100%;
         height: auto;
         border-radius: 50%; /* Make the border a circle */
