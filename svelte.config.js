@@ -32,9 +32,11 @@ import adapter from '@sveltejs/adapter-static';
 
 export default {
   kit: {
-    adapter: adapter(),
+    adapter: adapter({
+      fallback: 'index.html'
+    }),
     paths: {
-      base: process.env.NODE_ENV === 'production' ? '/https://AverageBadCoder.github.io/DaltonRoboticsSignInWebsite' : ''
+      base: process.env.NODE_ENV === 'production' ? '/DaltonRoboticsSignInWebsite' : ''
     }
   }
 };
