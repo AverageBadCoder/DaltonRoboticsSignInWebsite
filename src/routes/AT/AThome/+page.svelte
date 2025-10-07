@@ -10,6 +10,7 @@
     function handleRedirect2() {
         goto('/AT/ATtaskList');
     }
+    import { base } from '$app/paths';
 </script>
 
 <main>
@@ -20,7 +21,8 @@
     </div>
     <h1>Welcome to the Atomic Theory 4174 home page</h1>
     <div class="image-container">
-        <img src="/ATlogo.png" alt="Atomic Theory Logo" />
+
+        <img src="{base}/ATlogo.png" alt="Atomic Theory logo">
     </div>
 </main>
 

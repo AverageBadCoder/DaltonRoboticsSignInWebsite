@@ -6,6 +6,7 @@
     function handleRedirect1() {
         goto('/UP/UPhome');
     }
+    import { base } from '$app/paths';
     </script>
 
 <main>
@@ -21,7 +22,7 @@
    <h2>hi ms.screen</h2>
    <h5>website made by jonah madover 4174</h5>
    <div class="image-container">
-        <img src="/shivvy.png" alt="shiv pic" />
+        <img src="{base}/shivvy.png" alt="shiv pic" />
     </div>
 </main>
 
