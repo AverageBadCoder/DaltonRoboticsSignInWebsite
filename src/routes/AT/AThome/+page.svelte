@@ -2,13 +2,13 @@
     import { goto } from '$app/navigation';
 
     function handleRedirect() {
-        goto('/AT/ATphotos');
+        goto('/DaltonRoboticsSignInWebsite/AT/ATphotos');
     }
     function handleRedirect1() {
-        goto('/AT/ATbuildSessions');
+        goto('/DaltonRoboticsSignInWebsite/AT/ATbuildSessions');
     }
     function handleRedirect2() {
-        goto('/AT/ATtaskList');
+        goto('/DaltonRoboticsSignInWebsite/AT/ATtaskList');
     }
     import { base } from '$app/paths';
 </script>

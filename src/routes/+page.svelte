@@ -1,7 +1,7 @@
 <script>
   import { goto } from '$app/navigation';
   function handleRedirect() {
-        goto('/AT/AThome');
+        goto('/DaltonRoboticsSignInWebsite/AT/AThome');
     }
     function handleRedirect1() {
         goto('/UP/UPhome');

@@ -5,7 +5,7 @@
     let newTodo = '';
 
     function handleRedirect() {
-        goto('/AT/AThome');
+        goto('/DaltonRoboticsSignInWebsite/AT/AThome');
     }
 
     function addTodo() {
