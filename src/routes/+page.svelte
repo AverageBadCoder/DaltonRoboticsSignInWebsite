@@ -4,7 +4,7 @@
         goto('/DaltonRoboticsSignInWebsite/AT/AThome');
     }
     function handleRedirect1() {
-        goto('/UP/UPhome');
+        goto('/DaltonRoboticsSignInWebsite/UP/UPhome');
     }
     import { base } from '$app/paths';
     </script>
