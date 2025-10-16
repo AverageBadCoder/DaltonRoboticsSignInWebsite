@@ -3,7 +3,7 @@
 import { goto } from '$app/navigation';
 
     function handleRedirect() {
-        goto('/UP/UPhome');
+        goto('/DaltonRoboticsSignInWebsite/UP/UPhome');
     }
 
 </script>
