@@ -12,6 +12,8 @@ import { goto } from '$app/navigation';
 
     <button on:click={handleRedirect}>Back</button>
    <h1>build sessions</h1>
+   <h2>Alex 10 builds</h2>
+   <h3>Aaron 15 builds</h3>
 </main>
 
 <style>
@@ -28,5 +30,15 @@ import { goto } from '$app/navigation';
         overflow: hidden;
         color: #ffffff;
         text-align: center;
+    }
+    h2 {
+        overflow: hidden;
+        color: #ffffff;
+        text-align: left;
+    }
+    h3 {
+        overflow: hidden;
+        color: #ffffff;
+        text-align: left;
     }
 </style>
