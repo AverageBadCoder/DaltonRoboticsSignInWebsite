@@ -11,6 +11,7 @@ import { goto } from '$app/navigation';
 <main>
 
     <button on:click={handleRedirect}>Back</button>
+    <button on:click={null}>Log Build</button>
    <h1>build sessions</h1>
    <h2>Alex 10 builds</h2>
    <h3>Aaron 15 builds</h3>
