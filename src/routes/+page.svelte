@@ -1,5 +1,14 @@
 <script>
   import { goto } from '$app/navigation';
+  import { onMount } from 'svelte';
+  /**
+   * @type {{ name: any; email: any; } | null}
+   */
+  let user = null;
+  onMount(async () => {
+    const res = await fetch('/api/me', { credentials: 'include' });
+    if (res.ok) user = await res.json();
+  });
   function handleRedirect() {
         goto('/DaltonRoboticsSignInWebsite/AT/AThome');
     }
@@ -10,6 +19,9 @@
         goto('/DaltonRoboticsSignInWebsite/QM/QMhome');
     }
     import { base } from '$app/paths';
+    function login() {
+    location.href = '/auth/google/login'; // or include base: `${base}/auth/...`
+  }
     </script>
 
 <main>
@@ -27,6 +39,10 @@
    <div class="image-container">
         <img src="{base}/shivvy.png" alt="shiv pic" />
     </div>
+    <button on:click={login}>Sign in with Google</button>
+    {#if user}
+  <p>{user.name} ({user.email})</p>
+{/if}
 </main>
 
 
