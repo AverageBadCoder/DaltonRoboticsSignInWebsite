@@ -16,10 +16,12 @@ import (
 
 // simple in-memory user DB
 type User struct {
-	ID      string `json:"id"`
-	Email   string `json:"email"`
-	Name    string `json:"name"`
-	Picture string `json:"picture"`
+	ID      string `json:"id"` //username
+	Email   string `json:"email"` //email
+	Name    string `json:"name"` //full name of user
+	Picture string `json:"picture"` //profile picture
+	Tag     string `json:"tag"` //admin or team tags will descide the access level this must be set by an existing admin user
+	Approval bool `json:"approval"` //approval status must be set by an existing admin user before user or admin can acsess website
 }
 
 var users = map[string]User{}
@@ -77,6 +79,8 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 		Email   string `json:"email"`
 		Name    string `json:"name"`
 		Picture string `json:"picture"`
+		Tag     string `json:"tag"`
+		Approval bool `json:"approval"`
 	}
 	if err := json.Unmarshal(body, &gi); err != nil {
 		http.Error(w, "failed to parse userinfo", http.StatusInternalServerError)
@@ -84,7 +88,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// create-or-update user in memory (replace with DB code)
-	user := User{ID: gi.ID, Email: gi.Email, Name: gi.Name, Picture: gi.Picture}
+	user := User{ID: gi.ID, Email: gi.Email, Name: gi.Name, Picture: gi.Picture, Tag: gi.Tag, Approval: gi.Approval}
 	users[user.ID] = user
 
 	// create JWT session
