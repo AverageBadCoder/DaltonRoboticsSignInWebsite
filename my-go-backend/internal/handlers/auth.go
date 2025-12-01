@@ -14,7 +14,7 @@ import (
 	"golang.org/x/oauth2/google"
 )
 
-// simple in-memory user "DB"
+// simple in-memory user DB
 type User struct {
 	ID      string `json:"id"`
 	Email   string `json:"email"`
