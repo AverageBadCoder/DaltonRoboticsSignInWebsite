@@ -6,10 +6,12 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/joho/godotenv"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -30,26 +32,67 @@ var oauthConfig *oauth2.Config
 var jwtKey []byte
 
 func init() {
+	// ensure .env is loaded before reading env vars (main's godotenv.Load() is too late
+	// because package init runs earlier)
+	_ = godotenv.Load()
+
+	clientID := os.Getenv("GOOGLE_CLIENT_ID")
+	clientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
+
+	// fallback: try credentials.json if needed (existing logic can remain)
+	if clientID == "" || clientSecret == "" {
+		log.Println("GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET not set, falling back to credentials.json")
+		b, err := os.ReadFile("credentials.json")
+		if err != nil {
+			log.Fatalf("failed to read credentials.json: %v", err)
+		}
+		var cred struct {
+			ClientID     string `json:"client_id"`
+			ClientSecret string `json:"client_secret"`
+		}
+		if err := json.Unmarshal(b, &cred); err != nil {
+			log.Fatalf("failed to parse credentials.json: %v", err)
+		}
+		clientID = cred.ClientID
+		clientSecret = cred.ClientSecret
+	}
+
 	oauthConfig = &oauth2.Config{
-		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
-		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
 		Endpoint:     google.Endpoint,
 		Scopes:       []string{"openid", "profile", "email"},
 		RedirectURL:  os.Getenv("BACKEND_URL") + "/auth/google/callback",
 	}
+
 	jwtKey = []byte(os.Getenv("SESSION_KEY"))
+
+	log.Printf("oauth client id=%q redirect_url=%q\n", oauthConfig.ClientID, oauthConfig.RedirectURL)
 }
 
 // GET /auth/google/login
 func GoogleLogin(w http.ResponseWriter, r *http.Request) {
 	state := fmt.Sprintf("%d", time.Now().UnixNano())
-	// optional: store state in cookie/session to validate in callback
+	http.SetCookie(w, &http.Cookie{
+		Name:     "oauth_state",
+		Value:    state,
+		Path:     "/",
+		HttpOnly: true,
+	})
 	url := oauthConfig.AuthCodeURL(state, oauth2.AccessTypeOffline)
+	log.Printf("GoogleLogin redirecting to: %s (state=%s)\n", url, state)
 	http.Redirect(w, r, url, http.StatusFound)
 }
 
 // GET /auth/google/callback
 func GoogleCallback(w http.ResponseWriter, r *http.Request) {
+	log.Printf("GoogleCallback raw query: %s\n", r.URL.RawQuery)
+	if errParam := r.URL.Query().Get("error"); errParam != "" {
+		log.Printf("Google callback returned error=%s\n", errParam)
+		http.Error(w, "oauth error: "+errParam, http.StatusBadRequest)
+		return
+	}
+
 	ctx := r.Context()
 	code := r.URL.Query().Get("code")
 	if code == "" {
@@ -57,10 +100,30 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// try normal exchange first
 	token, err := oauthConfig.Exchange(ctx, code)
 	if err != nil {
+		// detailed logging
+		log.Printf("oauth exchange error: %v (client_id=%q redirect=%q code=%q)\n", err, oauthConfig.ClientID, oauthConfig.RedirectURL, code)
+
+		// manual token request to capture provider response body for debugging
+		resp, respErr := http.PostForm("https://oauth2.googleapis.com/token", url.Values{
+			"code":          {code},
+			"client_id":     {oauthConfig.ClientID},
+			"client_secret": {oauthConfig.ClientSecret},
+			"redirect_uri":  {oauthConfig.RedirectURL},
+			"grant_type":    {"authorization_code"},
+		})
+		if respErr != nil {
+			log.Printf("manual token request failed: %v\n", respErr)
+			http.Error(w, "token exchange failed", http.StatusInternalServerError)
+			return
+		}
+		defer resp.Body.Close()
+		b, _ := io.ReadAll(resp.Body)
+		log.Printf("manual token response status=%d body=%s\n", resp.StatusCode, string(b))
+
 		http.Error(w, "token exchange failed", http.StatusInternalServerError)
-		log.Println("exchange:", err)
 		return
 	}
 
