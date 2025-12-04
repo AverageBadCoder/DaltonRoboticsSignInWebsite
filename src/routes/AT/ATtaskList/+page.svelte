@@ -17,7 +17,7 @@
         if (newTodo.trim()) {
             todos = [
                 ...todos,
-                { text: newTodo.trim(), description: newDesc.trim(), checked: false }
+                { text: newTodo.trim(), description: newDesc.trim(), checked: false, important: false }
             ];
             newTodo = '';
             newDesc = '';
@@ -30,16 +30,30 @@
         );
     }
 
+    function toggleImportant(index) {
+        todos = todos.map((todo, i) =>
+            i === index ? { ...todo, important: !todo.important } : todo
+        );
+    }
+
     function removeTodo(index) {
         todos = todos.filter((_, i) => i !== index);
     }
 
     // derived visible list based on filter
-    $: visibleTodos = todos.filter(t => {
-        if (filter === 'active') return !t.checked;
-        if (filter === 'completed') return t.checked;
-        return true; // all
-    });
+    $: visibleTodos = todos
+        .filter(t => {
+            if (filter === 'active') return !t.checked;
+            if (filter === 'completed') return t.checked;
+            return true; // all
+        })
+        // move important tasks to top
+        .slice()
+        .sort((a, b) => {
+            const ai = a.important ? 1 : 0;
+            const bi = b.important ? 1 : 0;
+            return bi - ai; // important first
+        });
 
     function setFilter(f) {
         filter = f;
@@ -76,7 +90,7 @@
 
         <ul>
             {#each visibleTodos as todo, i}
-                <li>
+                <li class:important={todo.important}>
                     <input
                         type="checkbox"
                         checked={todo.checked}
@@ -88,6 +102,16 @@
                         <div class="task-desc">{todo.description}</div>
                       {/if}
                     </div>
+
+                    <!-- important toggle button -->
+                    <button
+                        type="button"
+                        class="important-btn"
+                        aria-label={todo.important ? 'Unmark important' : 'Mark important'}
+                        title={todo.important ? 'Unmark important' : 'Mark important'}
+                        on:click={() => toggleImportant(todos.indexOf(todo))}
+                    >⭐</button>
+
                     <button class="remove-btn" on:click={() => removeTodo(todos.indexOf(todo))}>🗑</button>
                 </li>
             {/each}
@@ -96,6 +120,11 @@
 </main>
 
 <style>
+  /* apply Comic Sans to the whole page */
+  :global(html, body) {
+    font-family: "Comic Sans MS", "Comic Sans", "ComicNeue", cursive;
+  }
+
     main {
         background: #010a35;
         min-height: 100vh;
@@ -164,18 +193,40 @@
         padding: 0.5rem 0;
         border-bottom: 1px solid #eee;
     }
+
+    /* highlight important tasks with red left border and light red background */
+    li.important {
+        background: #fff5f5;
+        border-left: 4px solid #e11d48;
+    }
+
+    /* allow flex child to shrink so text can wrap instead of overflowing */
     .task-content {
         display: flex;
         flex-direction: column;
         flex: 1;
+        min-width: 0;
     }
+    /* enable wrapping and word breaking for long titles/descriptions */
     .task-title {
         font-weight: 600;
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: anywhere;
     }
+
+    /* make title red when important */
+    li.important .task-title {
+        color: #b91c1c;
+    }
+
     .task-desc {
         font-size: 0.9rem;
         color: #666;
         margin-top: 0.25rem;
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: anywhere;
     }
     .checked {
         text-decoration: line-through;
@@ -197,4 +248,24 @@
         cursor: pointer;
         margin-left: 1rem;
     }
+
+    .important-btn {
+      /* override global button styles so it is always visible */
+      padding: 0;
+      width: 2rem;
+      height: 2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      font-size: 1.1rem;
+      line-height: 1;
+      color: #e11d48;
+      cursor: pointer;
+      margin-left: 0.25rem;
+    }
+    .important-btn[title="Unmark important"] { transform: scale(1.05); }
+
+    /* ...existing styles... */
 </style>
