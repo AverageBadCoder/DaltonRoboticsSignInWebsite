@@ -1,22 +1,16 @@
 import adapter from '@sveltejs/adapter-static';
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import preprocess from 'svelte-preprocess';
 
-const dev = process.argv.includes('dev');
+const dev = process.env.NODE_ENV === 'development';
 
-const config = {
-  preprocess: vitePreprocess(),
-
+export default {
+  preprocess: preprocess(),
   kit: {
-    adapter: adapter({
-      pages: 'build',
-      assets: 'build',
-      fallback: 'index.html'
-    }),
-
+    adapter: adapter(),
+    // ensure the base path used on GH Pages matches your repo name
     paths: {
-      base: dev ? '' : '/DaltonRoboticsSignInWebsite',
-    }
+      base: dev ? '' : '/DaltonRoboticsSignInWebsite'
+    },
+    appDir: '_app'
   }
 };
-
-export default config;

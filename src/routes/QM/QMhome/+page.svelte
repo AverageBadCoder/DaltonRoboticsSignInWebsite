@@ -1,5 +1,10 @@
 <script>
     import { goto } from '$app/navigation';
+    import { onMount } from 'svelte';
+  /**
+   * @type {{ name: any; email: any; } | null}
+   */
+  let user = null;
 
     function handleRedirect() {
         goto('/DaltonRoboticsSignInWebsite/QM/QMphotos');
@@ -11,6 +16,32 @@
         goto('/DaltonRoboticsSignInWebsite/AT/ATtaskList');
     }
     import { base } from '$app/paths';
+
+      // use the ngrok URL so the static site hits your public backend
+  const BACKEND_URL = 'https://unmordantly-stirruplike-naida.ngrok-free.dev';
+  function login() {
+    location.href = BACKEND_URL + '/auth/google/login';
+  }
+
+  onMount(async () => {
+    // capture token returned in fragment: https://your-gh-pages/#token=...
+    const hash = new URLSearchParams(location.hash.replace(/^#/, ''));
+    if (hash.has('token')) {
+      const token = hash.get('token');
+      if (token !== null) {
+        localStorage.setItem('token', token);
+      }
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+    const token = localStorage.getItem('token');
+    if (token) {
+      // changed: use BACKEND_URL instead of hardcoded localhost
+      const res = await fetch(BACKEND_URL + '/api/me', {
+        headers: { Authorization: 'Bearer ' + token }
+      });
+      if (res.ok) user = await res.json();
+    }
+  });
 </script>
 
 <main>
@@ -24,6 +55,10 @@
 
         <img src="{base}/ATlogo.png" alt="Atomic Theory logo">
     </div> -->
+    <button on:click={login}>Sign in with Google</button>
+    {#if user}
+  <p>{user.name} ({user.email})</p>
+{/if}
 </main>
 
 <style>

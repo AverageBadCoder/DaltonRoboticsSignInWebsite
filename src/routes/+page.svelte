@@ -5,26 +5,29 @@
    * @type {{ name: any; email: any; } | null}
    */
   let user = null;
+
+  // use the ngrok URL so the static site hits your public backend
+  const BACKEND_URL = 'https://unmordantly-stirruplike-naida.ngrok-free.dev';
+  function login() {
+    location.href = BACKEND_URL + '/auth/google/login';
+  }
+
   onMount(async () => {
-    // 1) capture token from fragment once after OAuth redirect
+    // capture token returned in fragment: https://your-gh-pages/#token=...
     const hash = new URLSearchParams(location.hash.replace(/^#/, ''));
     if (hash.has('token')) {
       const token = hash.get('token');
-      localStorage.setItem('token', token);
-      // remove fragment from URL
+      if (token !== null) {
+        localStorage.setItem('token', token);
+      }
       history.replaceState(null, '', location.pathname + location.search);
     }
-
-    // 2) use stored token to call backend API
     const token = localStorage.getItem('token');
     if (token) {
-      const res = await fetch('/api/me', {
+      // changed: use BACKEND_URL instead of hardcoded localhost
+      const res = await fetch(BACKEND_URL + '/api/me', {
         headers: { Authorization: 'Bearer ' + token }
       });
-      if (res.ok) user = await res.json();
-    } else {
-      // existing cookie-based fallback
-      const res = await fetch('/api/me', { credentials: 'include' });
       if (res.ok) user = await res.json();
     }
   });
@@ -38,10 +41,7 @@
         goto('/DaltonRoboticsSignInWebsite/QM/QMhome');
     }
     import { base } from '$app/paths';
-    function login() {
-    location.href = '/auth/google/login'; // or include base: `${base}/auth/...`
-  }
-    </script>
+</script>
 
 <main>
 

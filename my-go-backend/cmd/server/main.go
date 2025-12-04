@@ -22,12 +22,13 @@ func main() {
 
 	router := routes.SetupRoutes()
 
-	frontend := os.Getenv("FRONTEND_URL") // e.g. https://averagebadcoder.github.io/DaltonRoboticsSignInWebsite
+	frontend := os.Getenv("FRONTEND_URL")
+	ngrok := "https://unmordantly-stirruplike-naida.ngrok-free.dev"
 	cors := handlers.CORS(
-		handlers.AllowedOrigins([]string{frontend, "http://localhost:5173"}),
+		handlers.AllowedOrigins([]string{frontend, "http://localhost:5173", ngrok}),
 		handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"}),
 		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
-		// handlers.AllowCredentials(), // not needed for token-in-fragment flows
+		handlers.AllowCredentials(),
 	)
 
 	log.Printf("listening on :%s", port)
