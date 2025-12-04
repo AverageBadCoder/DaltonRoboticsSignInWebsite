@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -179,22 +180,33 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 	}
 	http.SetCookie(w, cookie)
 
-	// redirect back to frontend
+	// redirect to frontend with token in fragment so SPA can read it
 	frontend := os.Getenv("FRONTEND_URL")
 	if frontend == "" {
 		frontend = "/"
 	}
-	http.Redirect(w, r, frontend, http.StatusFound)
+	// ensure no trailing slash
+	frontend = strings.TrimRight(frontend, "/")
+	http.Redirect(w, r, frontend+"/#token="+signed, http.StatusFound)
+
 }
 
 // GET /api/me
 func Me(w http.ResponseWriter, r *http.Request) {
-	c, err := r.Cookie("session")
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
+	// 1) Try Authorization header Bearer <token>
+	auth := r.Header.Get("Authorization")
+	var tokenStr string
+	if strings.HasPrefix(auth, "Bearer ") {
+		tokenStr = strings.TrimPrefix(auth, "Bearer ")
+	} else {
+		// fallback to cookie if present
+		c, err := r.Cookie("session")
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+		tokenStr = c.Value
 	}
-	tokenStr := c.Value
 
 	token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -207,11 +219,12 @@ func Me(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	claims := token.Claims.(jwt.MapClaims)
-	uid := claims["sub"].(string)
+	uid, _ := claims["sub"].(string)
 	user, ok := users[uid]
 	if !ok {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	json.NewEncoder(w).Encode(user)
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(user)
 }

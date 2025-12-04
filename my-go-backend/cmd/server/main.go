@@ -22,12 +22,12 @@ func main() {
 
 	router := routes.SetupRoutes()
 
-	frontend := os.Getenv("FRONTEND_URL") // e.g. http://localhost:5173
+	frontend := os.Getenv("FRONTEND_URL") // e.g. https://averagebadcoder.github.io/DaltonRoboticsSignInWebsite
 	cors := handlers.CORS(
 		handlers.AllowedOrigins([]string{frontend, "http://localhost:5173"}),
 		handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"}),
 		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
-		handlers.AllowCredentials(),
+		// handlers.AllowCredentials(), // not needed for token-in-fragment flows
 	)
 
 	log.Printf("listening on :%s", port)

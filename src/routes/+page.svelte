@@ -6,8 +6,27 @@
    */
   let user = null;
   onMount(async () => {
-    const res = await fetch('/api/me', { credentials: 'include' });
-    if (res.ok) user = await res.json();
+    // 1) capture token from fragment once after OAuth redirect
+    const hash = new URLSearchParams(location.hash.replace(/^#/, ''));
+    if (hash.has('token')) {
+      const token = hash.get('token');
+      localStorage.setItem('token', token);
+      // remove fragment from URL
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+
+    // 2) use stored token to call backend API
+    const token = localStorage.getItem('token');
+    if (token) {
+      const res = await fetch('/api/me', {
+        headers: { Authorization: 'Bearer ' + token }
+      });
+      if (res.ok) user = await res.json();
+    } else {
+      // existing cookie-based fallback
+      const res = await fetch('/api/me', { credentials: 'include' });
+      if (res.ok) user = await res.json();
+    }
   });
   function handleRedirect() {
         goto('/DaltonRoboticsSignInWebsite/AT/AThome');
