@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
 
-  const STORAGE_KEY = 'UPbuild_sessions_v1';
+  const STORAGE_KEY = 'SMbuild_sessions_v1';
 
   let attendeesE  = []; // [{ name }]
   let attendeesL = []; // [{ name }]
@@ -16,7 +16,7 @@
   let logAmount = 1;
 
   function handleRedirect() {
-    goto('/DaltonRoboticsSignInWebsite/UP/UPhome');
+    goto('/DaltonRoboticsSignInWebsite/SM/SMhome');
   }
 
   function persist() {

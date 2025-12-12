@@ -1,0 +1,19 @@
+@font-face {
+  font-family: "Anta";
+  src: url("/fonts/Anta-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* apply to everything including form controls and pseudo elements */
+html, body, #svelte, *, *::before, *::after,
+input, button, textarea, select, option,
+label, a, h1, h2, h3, h4, p, span, div {
+  font-family: "Anta", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+
+/* placeholder rules */
+::placeholder { font-family: "Anta", sans-serif !important; }
+:-ms-input-placeholder { font-family: "Anta", sans-serif !important; }
+::-ms-input-placeholder { font-family: "Anta", sans-serif !important; }

@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
 
-  const STORAGE_KEY = 'build_sessions_v1';
+  const STORAGE_KEY = 'ATbuild_sessions_v1';
 
   let attendeesE  = []; // [{ name }]
   let attendeesL = []; // [{ name }]
@@ -129,6 +129,7 @@
   <div class="top-row">
     <div class="left-controls">
       <div class="signup">
+        <button on:click={handleRedirect}>Back</button>
         <input
           placeholder="Your name to attend"
           bind:value={signupName}

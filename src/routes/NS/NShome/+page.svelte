@@ -8,13 +8,13 @@
   let user = null;
 
     function handleRedirect() {
-        goto('/DaltonRoboticsSignInWebsite/UP/UPphotos');
+        goto('/DaltonRoboticsSignInWebsite/NS/NSphotos');
     }
     function handleRedirect1() {
-        goto('/DaltonRoboticsSignInWebsite/UP/UPbuildSessions');
+        goto('/DaltonRoboticsSignInWebsite/NS/NSbuildSessions');
     }
     function handleRedirect2() {
-        goto('/DaltonRoboticsSignInWebsite/UP/UPtaskList');
+        goto('/DaltonRoboticsSignInWebsite/NS/NStaskList');
     }
 
   // use the ngrok URL so the static site hits your public backend
@@ -50,7 +50,7 @@
         <button on:click={handleRedirect1}>Build Sessions</button>
         <button on:click={handleRedirect}>Photos</button>
     </div>
-    <h1>Welcome to the Uncertainty Principle 11453 home page</h1>
+    <h1>Welcome to the Natural Selection 17126 home page</h1>
     <div class="image-container">
 
         <img src="{base}/ATlogo.png" alt="Atomic Theory logo">
@@ -63,7 +63,7 @@
 
 <style>
     :global(body) {
-        background-color: #9100b5;
+        background-color: #124502;
         margin: 0;
         min-height: 100vh;
     }
@@ -94,7 +94,7 @@
         width: 100%;
         height: auto;
         border-radius: 50%; /* Make the border a circle */
-        box-shadow: 0 4px 16px rgb(195, 194, 194)30);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
         background: #fff;
         padding: 1rem;
         object-fit: cover; /* Ensures the image covers the circle */

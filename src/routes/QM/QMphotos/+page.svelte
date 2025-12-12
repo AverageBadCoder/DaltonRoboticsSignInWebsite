@@ -1,20 +1,22 @@
 <script>
-
 import { goto } from '$app/navigation';
+import { base } from '$app/paths';
 
-    function handleRedirect() {
-        goto('/DaltonRoboticsSignInWebsite/QM/QMhome');
-    }
-
+function handleRedirect() {
+  goto('/DaltonRoboticsSignInWebsite/QM/QMhome');
+}
 </script>
 
 <main>
+  <button on:click={handleRedirect}>Back</button>
+  <button on:click={null}>Upload</button>
+  <h1>photos </h1>
 
-    <button on:click={handleRedirect}>Back</button>
-    <button on:click={null}>Upload</button>
-   <h1>photos (upload button doesnt work)</h1>
-   <h2>imagine a photo here</h2>
-   <h3>imagine a photo here</h3>
+  <div class="image-container">
+    <img src="{base}/shivvy.png" alt="Shivvy" />
+    <img src="{base}/ATlogo.png" alt="Atomic Theory logo" />
+    <img src="{base}/granticon.png" alt="Grant" />
+  </div>
 </main>
 
 <style>
@@ -32,14 +34,22 @@ import { goto } from '$app/navigation';
         color: #ffffff;
         text-align: center;
     }
-    h2 {
-        overflow: hidden;
-        color: #ffffff;
-        text-align: center;
+
+        .image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2rem;
     }
-    h3 {
-        overflow: hidden;
-        color: #ffffff;
-        text-align: center;
+    .image-container img {
+        max-width: 600px;
+        width: 100%;
+        height: auto;
+        border-radius: 50%; /* Make the border a circle */
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        background: #fff;
+        padding: 1rem;
+        object-fit: cover; /* Ensures the image covers the circle */
+        aspect-ratio: 1 / 1; /* Keeps the image square for the circle */
     }
 </style>

@@ -3,15 +3,14 @@ import { goto } from '$app/navigation';
 import { base } from '$app/paths';
 
 function handleRedirect() {
-  goto('/DaltonRoboticsSignInWebsite/AT/AThome');
+  goto('/DaltonRoboticsSignInWebsite/EH/EHhome');
 }
 </script>
 
 <main>
   <button on:click={handleRedirect}>Back</button>
   <button on:click={null}>Upload</button>
-  <h1>photos </h1>
-
+  <h1>photos</h1>
 
   <div class="image-container">
     <img src="{base}/shivvy.png" alt="Shivvy" />

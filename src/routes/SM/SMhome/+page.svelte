@@ -8,13 +8,13 @@
   let user = null;
 
     function handleRedirect() {
-        goto('/DaltonRoboticsSignInWebsite/UP/UPphotos');
+        goto('/DaltonRoboticsSignInWebsite/SM/SMphotos');
     }
     function handleRedirect1() {
-        goto('/DaltonRoboticsSignInWebsite/UP/UPbuildSessions');
+        goto('/DaltonRoboticsSignInWebsite/SM/SMbuildSessions');
     }
     function handleRedirect2() {
-        goto('/DaltonRoboticsSignInWebsite/UP/UPtaskList');
+        goto('/DaltonRoboticsSignInWebsite/SM/SMtaskList');
     }
 
   // use the ngrok URL so the static site hits your public backend
@@ -50,7 +50,7 @@
         <button on:click={handleRedirect1}>Build Sessions</button>
         <button on:click={handleRedirect}>Photos</button>
     </div>
-    <h1>Welcome to the Uncertainty Principle 11453 home page</h1>
+    <h1>Welcome to the Standard Model 9372 home page</h1>
     <div class="image-container">
 
         <img src="{base}/ATlogo.png" alt="Atomic Theory logo">
@@ -63,7 +63,7 @@
 
 <style>
     :global(body) {
-        background-color: #9100b5;
+        background-color: #9a9a9a;
         margin: 0;
         min-height: 100vh;
     }

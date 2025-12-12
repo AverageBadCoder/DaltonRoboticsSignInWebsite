@@ -1,6 +1,7 @@
 <script>
     import { goto } from '$app/navigation';
-    import { onMount } from 'svelte';
+      import { onMount } from 'svelte';
+    import { base } from '$app/paths';
   /**
    * @type {{ name: any; email: any; } | null}
    */
@@ -10,14 +11,13 @@
         goto('/DaltonRoboticsSignInWebsite/QM/QMphotos');
     }
     function handleRedirect1() {
-        goto('/DaltonRoboticsSignInWebsite/AT/ATbuildSessions');
+        goto('/DaltonRoboticsSignInWebsite/QM/QMbuildSessions');
     }
     function handleRedirect2() {
-        goto('/DaltonRoboticsSignInWebsite/AT/ATtaskList');
+        goto('/DaltonRoboticsSignInWebsite/QM/QMtaskList');
     }
-    import { base } from '$app/paths';
 
-      // use the ngrok URL so the static site hits your public backend
+  // use the ngrok URL so the static site hits your public backend
   const BACKEND_URL = 'https://unmordantly-stirruplike-naida.ngrok-free.dev';
   function login() {
     location.href = BACKEND_URL + '/auth/google/login';
@@ -46,15 +46,15 @@
 
 <main>
     <div class="button-row">
-        <!-- <button on:click={handleRedirect2}>Task List</button>
-        <button on:click={handleRedirect1}>Build Sessions</button> -->
+        <button on:click={handleRedirect2}>Task List</button>
+        <button on:click={handleRedirect1}>Build Sessions</button>
         <button on:click={handleRedirect}>Photos</button>
     </div>
     <h1>Welcome to the Quantum Mechanics 6051 home page</h1>
-    <!-- <div class="image-container">
+    <div class="image-container">
 
         <img src="{base}/ATlogo.png" alt="Atomic Theory logo">
-    </div> -->
+    </div>
     <button on:click={login}>Sign in with Google</button>
     {#if user}
   <p>{user.name} ({user.email})</p>
@@ -63,7 +63,7 @@
 
 <style>
     :global(body) {
-        background-color: #002aff;
+        background-color: #0048ff;
         margin: 0;
         min-height: 100vh;
     }
@@ -83,7 +83,7 @@
         color: #ffffff;
         text-align: center;
     }
-    /* .image-container {
+    .image-container {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -93,13 +93,13 @@
         max-width: 600px;
         width: 100%;
         height: auto;
-        border-radius: 50%;  Make the border a circle
-         box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        border-radius: 50%; /* Make the border a circle */
+        box-shadow: 0 4px 16px rgb(0, 76, 198);
         background: #fff;
         padding: 1rem;
         object-fit: cover; /* Ensures the image covers the circle */
-        /* aspect-ratio: 1 / 1; /* Keeps the image square for the circle */
-    /*}*/
+        aspect-ratio: 1 / 1; /* Keeps the image square for the circle */
+    }
     button {
         margin-top: .5rem;
         margin-left: .5rem;

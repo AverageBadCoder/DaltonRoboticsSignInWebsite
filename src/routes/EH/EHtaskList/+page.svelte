@@ -9,7 +9,7 @@
     let filter = 'all';
 
     function handleRedirect() {
-        goto('/DaltonRoboticsSignInWebsite/AT/AThome');
+        goto('/DaltonRoboticsSignInWebsite/EH/EHhome');
     }
 
     function addTodo() {

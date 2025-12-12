@@ -40,6 +40,18 @@
     function handleRedirect2() {
         goto('/DaltonRoboticsSignInWebsite/QM/QMhome');
     }
+    function handleRedirect3() {
+        goto('/DaltonRoboticsSignInWebsite/SM/SMhome');
+    }
+    function handleRedirect4() {
+        goto('/DaltonRoboticsSignInWebsite/NS/NShome');
+    }
+    function handleRedirect5() {
+        goto('/DaltonRoboticsSignInWebsite/GR/GRhome');
+    }
+    function handleRedirect6() {
+        goto('/DaltonRoboticsSignInWebsite/EH/EHhome');
+    }
     import { base } from '$app/paths';
 </script>
 
@@ -47,12 +59,12 @@
 
     <button on:click={handleRedirect}>4174</button>
     <button on:click={handleRedirect2}>6051</button>
-    <button on:click={handleRedirect}>9371</button>
-    <button on:click={handleRedirect}>9372</button>
+    <button on:click={handleRedirect5}>9371</button>
+    <button on:click={handleRedirect3}>9372</button>
     <button on:click={handleRedirect1}>11453</button>
-    <button on:click={handleRedirect}>17126</button>
-    <button on:click={handleRedirect}>10229</button>
-   <h1>ADMIN HOME PAGE (goto 4174 for builds goto 6051 for photos and goto 11453 for todo)</h1>
+    <button on:click={handleRedirect4}>17126</button>
+    <button on:click={handleRedirect6}>10229</button>
+   <h1>ADMIN HOME PAGE</h1>
    <h2>hi ms.screen</h2>
    <h5>website made by jonah madover 4174</h5>
    <div class="image-container">
