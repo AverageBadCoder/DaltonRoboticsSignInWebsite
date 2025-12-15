@@ -11,7 +11,7 @@
         goto('/DaltonRoboticsSignInWebsite/EH/EHphotos');
     }
     function handleRedirect1() {
-        goto('/DaltonRoboticsSignInWebsite/EH/EHbuildSessions');
+        goto('/DaltonRoboticsSignInWebsite/EH/EHbuildSession');
     }
     function handleRedirect2() {
         goto('/DaltonRoboticsSignInWebsite/EH/EHtaskList');

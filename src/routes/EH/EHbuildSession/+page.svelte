@@ -231,7 +231,7 @@
     padding: 1rem;
     color: #fff;
     min-height: 100vh;
-    background: linear-gradient(180deg,#021034,#00122a);
+    background: #370054;
     box-sizing: border-box;
   }
 
@@ -269,7 +269,7 @@
     padding: .5rem .9rem;
     border-radius: 8px;
     border: none;
-    background: #0b63ff;
+    background: #bc1bf6;
     color: #fff;
     cursor: pointer;
     font-size: 1rem;

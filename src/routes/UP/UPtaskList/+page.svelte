@@ -140,7 +140,7 @@ label, a, h1, h2, h3, h4, p, span, div {
 ::-ms-input-placeholder { font-family: "Anta", sans-serif !important; }
 
     main {
-        background: #010a35;
+        background: #9100b5;
         min-height: 100vh;
     }
     button {
@@ -178,9 +178,9 @@ label, a, h1, h2, h3, h4, p, span, div {
         border: 1px solid #ddd;
     }
     .filter button.active {
-        background: #0069ff;
+        background: #4f006b;
         color: #fff;
-        border-color: #0069ff;
+        border-color: #4f006b;
     }
     input[type="text"], textarea {
         padding: 0.5rem;
